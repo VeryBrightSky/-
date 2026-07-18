@@ -1,0 +1,19 @@
+{
+  // Must match your Worker's name in the Cloudflare dashboard
+  "name": "crownreport1",
+  "main": "worker.js",
+  "compatibility_date": "2026-07-01",
+  "assets": {
+    "directory": ".",
+    "binding": "ASSETS",
+    "not_found_handling": "404-page"
+  },
+  "kv_namespaces": [
+    {
+      "binding": "STORIES",
+      // REPLACE the id below: Cloudflare dash -> Storage & databases -> KV ->
+      // create namespace "crown-stories" -> copy its Namespace ID here
+      "id": "42d2e4a8f7df4dc68e46d99542673d6d"
+    }
+  ]
+}
