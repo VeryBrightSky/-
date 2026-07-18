@@ -1,0 +1,5 @@
+# AI crawlers welcome (GPTBot, ClaudeBot, PerplexityBot, Google-Extended and others)
+User-agent: *
+Allow: /
+Disallow: /admin.html
+Sitemap: https://YOURDOMAIN.com/sitemap.xml

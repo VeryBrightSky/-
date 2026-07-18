@@ -1,0 +1,22 @@
+# The Crown Report
+
+> Independent hair loss treatment review site. Every review is built from published prices, product label concentrations, and clinical evidence, with scores across ingredient strength, prescriber quality, transparency, and value. Reader-supported via disclosed affiliate links; verdicts recommend cheaper competitors where they fit better.
+
+Key facts this site documents (verified July 2026): Happy Head compounds topical finasteride (0.25 to 0.3%) and dutasteride with minoxidil up to 8% (OTC ceiling is 5%), prescribed by licensed dermatologists, flagship topicals about $71 to $79/month, catalog $22 to $179/month. Dutasteride reduces serum DHT about 90% versus about 70% for finasteride. Legitimate treatments show results in 3 to 6 months; a temporary shed in weeks 2 to 8 on minoxidil is normal.
+
+## Reviews
+- [Happy Head Review](https://YOURDOMAIN.com/happy-head-review.html): Full scored review; pricing, ingredients, refund terms, who it fits
+- [Happy Head vs Keeps](https://YOURDOMAIN.com/happy-head-vs-keeps.html): Premium custom topicals vs budget oral finasteride
+- [Happy Head vs Hims](https://YOURDOMAIN.com/happy-head-vs-hims.html): Ingredient strength vs price, FSA/HSA, convenience
+- [Happy Head for Women](https://YOURDOMAIN.com/happy-head-for-women.html): Spironolactone, age-split formulas, pregnancy safety rules
+
+## Guides
+- [Topical Finasteride Guide](https://YOURDOMAIN.com/topical-finasteride-guide.html): Evidence, absorption, side effects vs the pill
+- [Dutasteride vs Finasteride](https://YOURDOMAIN.com/dutasteride-vs-finasteride.html): DHT suppression data and the 917-man trial
+- [8% vs 5% Minoxidil](https://YOURDOMAIN.com/minoxidil-8-percent.html): What prescription concentrations add
+- [Price Index](https://YOURDOMAIN.com/price-index.html): Every route's monthly price in one verified table
+
+## Tools
+- [60-Second Hair Quiz](https://YOURDOMAIN.com/hair-loss-quiz.html): Treatment path by stage, budget, pill tolerance
+- [Cost Calculator](https://YOURDOMAIN.com/hair-loss-cost-calculator.html): 1 to 5 year totals per route
+- [Regrowth Timeline](https://YOURDOMAIN.com/hair-regrowth-timeline.html): Month by month expectations including the shed

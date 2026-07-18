@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#FBFAF7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#121814" media="(prefers-color-scheme: dark)">
+<title>Admin · The Crown Report</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" rx="6" fill="%23205C43"/><text x="16" y="23" font-size="19" font-family="Georgia" font-weight="bold" text-anchor="middle" fill="white">℞</text></svg>'>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@700;800&family=Public+Sans:wght@400;600;700&family=IBM+Plex+Mono:wght@500;700&display=swap" rel="stylesheet">
+<link rel="manifest" href="site.webmanifest">
+<link rel="stylesheet" href="style.css">
+<style>
+.admin-card{border:1px solid var(--line);border-radius:var(--r);background:var(--card);padding:18px;margin:0 0 14px;box-shadow:var(--sh)}
+.admin-card p.story{white-space:pre-wrap;font-size:.92rem;background:var(--sage);border-radius:10px;padding:12px 14px}
+.meta{font:500 .7rem "IBM Plex Mono",monospace;color:var(--muted);letter-spacing:.05em}
+.tabs{display:flex;gap:8px;margin:1.2rem 0;flex-wrap:wrap}
+.tabs button{border:1px solid var(--line-2);background:var(--paper);border-radius:99px;padding:8px 16px;font:600 .85rem "Public Sans",sans-serif;color:var(--ink);cursor:pointer}
+.tabs button.on{background:var(--pine);border-color:var(--pine);color:#fff}
+.row-actions{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.row-actions .btn{margin:0;padding:10px 14px;font-size:.82rem}
+.btn.warn{background:#B0562A}.btn.gray{background:var(--muted)}
+#login{max-width:380px;margin:4rem auto}
+.field{width:100%;padding:12px;border:1px solid var(--line-2);border-radius:10px;background:var(--paper);font:600 1rem "Public Sans",sans-serif;color:var(--ink)}
+.err{color:#B0562A;font-size:.85rem}
+.count{font:700 .7rem "IBM Plex Mono",monospace;background:var(--amber-tint);color:var(--amber);border-radius:99px;padding:3px 8px;margin-left:6px}
+</style>
+<script type="speculationrules">
+{"prerender":[{"where":{"and":[{"href_matches":"/*"},{"not":{"href_matches":"/admin.html"}}]},"eagerness":"moderate"}]}
+</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header><div class="wrap nav">
+  <a class="logo" href="index.html"><svg width="21" height="21" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 17 L5 7 L9.5 12 L12 5 L14.5 12 L19 7 L21 17 Z" fill="none" stroke="#1E5C42" stroke-width="2" stroke-linejoin="round"/><path d="M5 20 h14" stroke="#C9822F" stroke-width="2.4" stroke-linecap="round"/></svg>The Crown<span>Report</span></a>
+  <span class="meta">ADMIN</span>
+</div></header>
+<main class="wrap" id="main">
+  <div id="login">
+    <p class="kicker">Admin</p>
+    <h1 style="font-size:1.6rem">Sign in</h1>
+    <p style="font-size:.9rem;color:var(--muted)">Enter the admin key configured in your Cloudflare Pages environment variables.</p>
+    <input class="field" id="pw" type="password" autocomplete="current-password" placeholder="Admin key">
+    <p class="err hidden" id="loginErr">Wrong key, or the backend isn't deployed yet.</p>
+    <button class="btn" id="loginBtn" style="margin-top:10px">Sign in <span class="arr">→</span></button>
+  </div>
+
+  <div id="dash" class="hidden">
+    <p class="kicker">Submissions</p>
+    <h2 style="font-size:1.7rem;margin:.2rem 0 0">Review queue</h2>
+    <div class="tabs">
+      <button data-t="pending" class="on">Pending<span class="count" id="cPending">0</span></button>
+      <button data-t="approved">Approved<span class="count" id="cApproved">0</span></button>
+      <button data-t="rejected">Rejected<span class="count" id="cRejected">0</span></button>
+      <button id="refresh" style="margin-left:auto">↻ Refresh</button>
+      <button id="logout">Log out</button>
+    </div>
+    <div id="list"></div>
+    <p class="meta" id="empty" style="display:none">Nothing here.</p>
+  </div>
+</main>
+<script>
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+let KEY=sessionStorage.getItem("crk")||"", SUBS=[], TAB="pending";
+const H=()=>({"Authorization":"Bearer "+KEY,"Content-Type":"application/json"});
+
+async function load(){
+  const r=await fetch("/api/admin/list",{headers:H()});
+  if(r.status===401){sessionStorage.removeItem("crk");show(false);$("loginErr").classList.remove("hidden");return false;}
+  const d=await r.json(); SUBS=d.subs||[]; render(); return true;
+}
+function show(ok){$("login").classList.toggle("hidden",ok);$("dash").classList.toggle("hidden",!ok);}
+function render(){
+  const by=s=>SUBS.filter(x=>x.status===s).length;
+  cPending.textContent=by("pending");cApproved.textContent=by("approved");cRejected.textContent=by("rejected");
+  const items=SUBS.filter(x=>x.status===TAB);
+  $("empty").style.display=items.length?"none":"block";
+  $("list").innerHTML=items.map(s=>`
+    <div class="admin-card">
+      <div class="meta">${esc(new Date(s.ts).toLocaleString())} · ${esc(s.months||"duration n/a")} · ${s.email?esc(s.email):"no email"}</div>
+      <h3 style="margin:.4rem 0">${esc(s.name)}, ${esc(s.treatment)}</h3>
+      <p class="story">${esc(s.story)}</p>
+      <div class="row-actions">
+        ${TAB!=="approved"?`<button class="btn" data-a="approve" data-id="${esc(s.id)}">Approve &amp; publish</button>`:""}
+        ${TAB!=="rejected"?`<button class="btn gray" data-a="reject" data-id="${esc(s.id)}">Reject</button>`:""}
+        <button class="btn warn" data-a="delete" data-id="${esc(s.id)}">Delete forever</button>
+      </div>
+    </div>`).join("");
+}
+$("list").addEventListener("click",async e=>{
+  const b=e.target.closest("button[data-a]"); if(!b)return;
+  if(b.dataset.a==="delete"&&!confirm("Delete this submission permanently?"))return;
+  b.disabled=true;
+  await fetch("/api/admin/update",{method:"POST",headers:H(),body:JSON.stringify({id:b.dataset.id,action:b.dataset.a})});
+  await load();
+});
+document.querySelectorAll(".tabs button[data-t]").forEach(b=>b.addEventListener("click",()=>{
+  document.querySelectorAll(".tabs button[data-t]").forEach(x=>x.classList.remove("on"));
+  b.classList.add("on");TAB=b.dataset.t;render();
+}));
+$("refresh").addEventListener("click",load);
+$("logout").addEventListener("click",()=>{sessionStorage.removeItem("crk");KEY="";show(false);});
+$("loginBtn").addEventListener("click",async()=>{
+  KEY=$("pw").value.trim(); if(!KEY)return;
+  sessionStorage.setItem("crk",KEY); $("loginErr").classList.add("hidden");
+  if(await load())show(true);
+});
+$("pw").addEventListener("keydown",e=>{if(e.key==="Enter")$("loginBtn").click();});
+if(KEY)load().then(ok=>show(ok));
+</script>
+</body>
+</html>
