@@ -138,3 +138,12 @@ window.AFF_URL = ""; // <-- PASTE YOUR KATALYS TRACKING LINK HERE (e.g. "https:/
   if (sc && ft && "IntersectionObserver" in window)
     new IntersectionObserver(es => { sc.style.display = es[0].isIntersecting ? "none" : ""; }).observe(ft);
 })();
+
+// cursor spotlight coords for cards/steps
+document.addEventListener("pointermove", e => {
+  const t = e.target.closest(".card,.step");
+  if (!t) return;
+  const r = t.getBoundingClientRect();
+  t.style.setProperty("--mx", ((e.clientX - r.left) / r.width * 100) + "%");
+  t.style.setProperty("--my", ((e.clientY - r.top) / r.height * 100) + "%");
+}, { passive: true });

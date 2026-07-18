@@ -557,3 +557,52 @@ main.wrap > h2::before{content:counter(sec,decimal-leading-zero);
 
 /* dark band bridges to the serif world */
 .band-dark .sect-head h2{font-family:"Instrument Serif",Georgia,serif;font-weight:400}
+
+/* ============================================================
+   v19: spotlight, living gradients, glow
+   ============================================================ */
+/* animated gradient headline accent: the text subtly shifts hue */
+.gx{background-size:220% 100%;animation:gxShift 7s ease-in-out infinite alternate}
+@keyframes gxShift{from{background-position:0% 0}to{background-position:100% 0}}
+@media (prefers-reduced-motion:reduce){.gx{animation:none}}
+
+/* cursor spotlight on cards (coords set by JS as --mx/--my) */
+.card,.step,.tool{position:relative;overflow:hidden}
+.card::after,.step::after{content:"";position:absolute;inset:0;pointer-events:none;opacity:0;
+  transition:opacity .3s ease;
+  background:radial-gradient(340px circle at var(--mx,50%) var(--my,50%),
+    color-mix(in srgb,var(--pine) 9%,transparent),transparent 65%)}
+.step::after{background:radial-gradient(340px circle at var(--mx,50%) var(--my,50%),
+    rgba(255,255,255,.07),transparent 65%)}
+.card:hover::after,.step:hover::after{opacity:1}
+@media (hover:none){.card::after,.step::after{display:none}}
+
+/* button glow: primary buttons breathe light on hover */
+.btn:not(.ghost):hover{box-shadow:0 4px 14px rgba(31,42,36,.18),
+  0 0 28px color-mix(in srgb,var(--pine) 38%,transparent)}
+.btn:not(.ghost):focus-visible{box-shadow:0 0 0 3px color-mix(in srgb,var(--amber) 55%,transparent)}
+
+/* animated link underlines: grow left to right */
+main p a,main li a,.faq .a a{text-decoration:none;
+  background-image:linear-gradient(currentColor,currentColor);
+  background-repeat:no-repeat;background-position:0 100%;background-size:100% 1.5px;
+  transition:background-size .25s ease,color .12s}
+main p a:hover,main li a:hover{background-size:0% 1.5px}
+
+/* inputs: focus ring with life */
+.tool input:focus,.tool select:focus,.tool textarea:focus,.field:focus{outline:none;
+  border-color:var(--pine);box-shadow:0 0 0 3px color-mix(in srgb,var(--pine) 22%,transparent)}
+
+/* score ring: soft aura */
+.ring::before{content:"";position:absolute;inset:-8px;border-radius:50%;
+  background:radial-gradient(circle,color-mix(in srgb,var(--amber) 28%,transparent),transparent 70%);
+  filter:blur(6px);z-index:-1}
+
+/* sticky CTA: frosted */
+.sticky-cta{background:color-mix(in srgb,var(--card) 74%,transparent);
+  backdrop-filter:blur(12px) saturate(1.2);-webkit-backdrop-filter:blur(12px) saturate(1.2)}
+
+/* dark band steps get a touch more presence */
+.step{transition:transform .18s ease,background .18s ease}
+.step:hover{transform:translateY(-2px);background:rgba(255,255,255,.075)}
+@media (prefers-reduced-motion:reduce){.step{transition:none}.step:hover{transform:none}}
