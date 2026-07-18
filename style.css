@@ -1,3 +1,4 @@
+/* Instrument Serif now loads via the <link> tag on each page (faster than @import) */
 /* The Crown Report — v7 refined system
    Lighter "pharmacy label" look: hairline borders, soft radius, generous air.
    paper #FBFAF7 / ink #1F2A24 / pine #1E5C42 / amber #C9822F */
@@ -513,7 +514,6 @@ header.scrolled .nav{padding:9px 0}
 /* ============================================================
    v18 OVERHAUL: editorial serif identity + richer palette
    ============================================================ */
-@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap');
 
 /* richer, warmer world */
 :root{--paper:#F8F5ED;--card:#FFFFFF;--ink:#19231C;--pine:#1D5A40;--pine-dk:#154732;
@@ -606,3 +606,21 @@ main p a:hover,main li a:hover{background-size:0% 1.5px}
 .step{transition:transform .18s ease,background .18s ease}
 .step:hover{transform:translateY(-2px);background:rgba(255,255,255,.075)}
 @media (prefers-reduced-motion:reduce){.step{transition:none}.step:hover{transform:none}}
+
+/* ===== v20: bug fixes from audit ===== */
+/* BUG 2: word-entrance animation was overriding the living-gradient animation
+   on the hero accent. Run both together. */
+.hero.center h1 .w.gx{animation:wordUp .8s var(--ease) forwards,
+  gxShift 7s ease-in-out .9s infinite alternate}
+@media (prefers-reduced-motion:reduce){.hero.center h1 .w.gx{animation:none;opacity:1;transform:none}}
+/* BUG 3: overflow:hidden on .tool could clip the "SOON" badge on pending
+   affiliate buttons inside tools. Tools don't use the spotlight, so release it. */
+.tool{overflow:visible}
+
+/* ===== v21: WCAG contrast fixes ===== */
+:root{--amber-ink:#8A5713}
+@media (prefers-color-scheme:dark){:root{--amber-ink:#E29C45}}
+.kicker,.qstep,.tl-marks,.subscore span b,.badge{color:var(--amber-ink)}
+.badge{border-color:color-mix(in srgb,var(--amber-ink) 45%,transparent)}
+.rx-head{background:#A05A14}
+@media (prefers-color-scheme:dark){.rx-head{background:#A05A14}}

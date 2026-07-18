@@ -9,7 +9,7 @@
 <link rel="canonical" href="https://YOURDOMAIN.com/hair-loss-quiz.html">
 <link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" rx="6" fill="%23205C43"/><text x="16" y="23" font-size="19" font-family="Georgia" font-weight="bold" text-anchor="middle" fill="white">℞</text></svg>'>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@700;800&family=Public+Sans:wght@400;600;700&family=IBM+Plex+Mono:wght@500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@700;800&family=Instrument+Serif:ital@0;1&family=Public+Sans:wght@400;600;700&family=IBM+Plex+Mono:wght@500;700&display=swap" rel="stylesheet">
 <meta property="og:title" content="Hair Loss Quiz: Find Your Treatment Path in 60 Seconds (2026)">
 <meta property="og:description" content="Free 5-question quiz: figure out your hair loss stage and which treatment route fits. DIY generics, Keeps, Hims, or Happy Head's custom topicals.">
 <meta property="og:type" content="article">
@@ -112,7 +112,7 @@ nav.links .top{display:none}}
       <h3 class="q">Monthly budget for treatment?</h3>
       <div class="opts">
         <button data-v="low">Under $30</button>
-        <button data-v="mid">$30 to 70</button>
+        <button data-v="mid">$30 to $70</button>
         <button data-v="high">$70+</button>
       </div>
     </div>
@@ -178,22 +178,22 @@ function showResult(){
   let title,badges=[],body,cta,note,aff=true;
   if(triedRx || (noPill&&budget==="high") || (stage==="established"&&budget!=="low")){
     title="Your match: Happy Head's custom topicals";
-    badges=["8% minoxidil","topical fin/dut","dermatologist Rx","~$71 to 79/mo"];
+    badges=["8% minoxidil","topical fin/dut","dermatologist Rx","~$71 to $79/mo"];
     body="Based on your answers, "+(triedRx?"standard treatment hasn't done enough, ":"")+(noPill?"you'd rather keep finasteride off the pill route, ":"")+"and your budget allows it, the strongest legal step is a compounded topical: finasteride or dutasteride blended with 8% minoxidil, prescribed by a dermatologist. That's exactly Happy Head's lane.";
     cta="Take Happy Head's dermatology assessment →"; note="Affiliate link · prescribed only if a dermatologist approves.";
   } else if(noPill && budget!=="high"){
     title="Your match: topical-first on a budget";
     badges=["topical fin + minox","standard strength","lower cost"];
-    body="You want to avoid the oral route without paying specialist prices. Standard-strength topical finasteride + minoxidil combos from mainstream telehealth (Hims-style, roughly $30 to 50/mo) are your starting point; upgrade to compounded 8% formulas later if results stall. Our topical finasteride guide covers the trade-offs.";
+    body="You want to avoid the oral route without paying specialist prices. Standard-strength topical finasteride + minoxidil combos from mainstream telehealth (Hims-style, roughly $30 to $50/mo) are your starting point; upgrade to compounded 8% formulas later if results stall. Our topical finasteride guide covers the trade-offs.";
     cta="Read the topical finasteride guide →"; note="Free guide on this site."; aff=false;
   } else if(budget==="low"){
     title="Your match: the proven DIY basics";
-    badges=["oral finasteride","5% minoxidil","~$25 to 35/mo"];
+    badges=["oral finasteride","5% minoxidil","~$25 to $35/mo"];
     body="You're "+(stage==="early"?"early":"in a good position")+" and fine with a pill, so the FDA-approved fundamentals are the smart play: generic oral finasteride plus 5% minoxidil, from whichever pharmacy or telehealth service is cheapest for you. Boring, proven, sustainable. Reassess in 12 months.";
     cta="Compare the budget routes →"; note="Our Happy Head vs Keeps comparison covers the value picks."; aff=false;
   } else {
     title="Your match: convenient standard treatment";
-    badges=["oral fin or combo","telehealth Rx","~$30 to 60/mo"];
+    badges=["oral fin or combo","telehealth Rx","~$30 to $60/mo"];
     body="You're a straightforward candidate for standard treatment with the convenience of telehealth handling the prescription and shipping. Any of the major services work; the differences are price and format. If you specifically want maximum topical strength or a dermatologist managing your case, that's when Happy Head earns its premium.";
     cta="See how the services compare →"; note="Full comparison on this site."; aff=false;
   }

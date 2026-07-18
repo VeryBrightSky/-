@@ -85,6 +85,14 @@ export default {
     } catch (e) {
       return json({ ok: false, error: "Server error" }, 500);
     }
-    return env.ASSETS.fetch(request);
+    // static assets, with security headers guaranteed at the worker level
+    const res = await env.ASSETS.fetch(request);
+    const r = new Response(res.body, res);
+    r.headers.set("X-Content-Type-Options", "nosniff");
+    r.headers.set("Referrer-Policy", "strict-origin-when-cross-origin");
+    r.headers.set("Permissions-Policy", "camera=(), microphone=(), geolocation=()");
+    r.headers.set("Content-Security-Policy",
+      "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'");
+    return r;
   }
 };
