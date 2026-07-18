@@ -509,3 +509,51 @@ header.scrolled .nav{padding:9px 0}
 .hstat b{font-size:clamp(1.15rem,1.8vw,1.35rem);white-space:nowrap}
 .hstat span{display:block;line-height:1.35;letter-spacing:.01em}
 .sect-head p{text-wrap:balance}
+
+/* ============================================================
+   v18 OVERHAUL: editorial serif identity + richer palette
+   ============================================================ */
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap');
+
+/* richer, warmer world */
+:root{--paper:#F8F5ED;--card:#FFFFFF;--ink:#19231C;--pine:#1D5A40;--pine-dk:#154732;
+  --amber:#C07A28;--amber-tint:#FAF1E2;--sage:#EDF3ED;--line:#E3DECF;--line-2:#D2CCBA;--muted:#66716A}
+@media (prefers-color-scheme:dark){
+  :root{--paper:#0F1512;--card:#171E19;--ink:#EAEEEB;--pine:#63C296;--pine-dk:#7ED0A9;
+    --amber:#E29C45;--amber-tint:#2A2013;--sage:#1C2620;--line:#2A342D;--line-2:#39443C;--muted:#96A39B}
+}
+
+/* the serif flip: headlines become editorial */
+h1{font-family:"Instrument Serif",Georgia,serif;font-weight:400;letter-spacing:-.015em;
+  font-size:clamp(2.4rem,7vw,4rem);line-height:1.06}
+.hero.center h1{font-size:clamp(2.6rem,7.6vw,4.4rem);max-width:16ch}
+.gx{font-style:italic;padding-right:.06em}
+.sect-head h2{font-family:"Instrument Serif",Georgia,serif;font-weight:400;
+  font-size:clamp(1.8rem,5vw,2.6rem);letter-spacing:-.01em}
+.hero p.lede{font-size:clamp(1.05rem,2.4vw,1.22rem);line-height:1.65}
+.step h3,.pullstat b{font-family:"Instrument Serif",Georgia,serif;font-weight:400}
+.pullstat b{font-style:italic}
+
+/* numbered article sections: editorial chaptering, CSS only */
+main.wrap{counter-reset:sec}
+main.wrap > h2{counter-increment:sec;position:relative}
+main.wrap > h2::before{content:counter(sec,decimal-leading-zero);
+  font:700 .68rem/1 "IBM Plex Mono",monospace;color:var(--amber);letter-spacing:.12em;
+  display:block;margin:0 0 6px}
+
+/* kickers: wider, quieter */
+.kicker{letter-spacing:.22em;font-size:.68rem}
+
+/* buttons: more presence */
+.btn{padding:15px 26px;font-size:.95rem;letter-spacing:.01em}
+
+/* verdict card head matches new identity */
+.rx-head{letter-spacing:.16em}
+
+/* deeper card presence in the warm world */
+.card,.tool,.tbl-scroll,.pc div,.faq details,.chooser,.toc{
+  box-shadow:0 1px 2px rgba(25,35,28,.05),0 12px 40px rgba(25,35,28,.08)}
+.card:hover{box-shadow:0 2px 4px rgba(25,35,28,.06),0 22px 56px rgba(25,35,28,.13)}
+
+/* dark band bridges to the serif world */
+.band-dark .sect-head h2{font-family:"Instrument Serif",Georgia,serif;font-weight:400}
