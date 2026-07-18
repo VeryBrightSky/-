@@ -67,14 +67,13 @@ nav.links .top{display:none}}
 <main class="wrap" id="main">
   <p class="kicker">Community</p>
   <h1>Reader Results</h1>
-  <p class="byline">Real submissions, human-moderated, published with permission. Individual experiences, not medical evidence.</p>
-  <p class="fund-line">Reader-supported · partner links marked · <a href="about.html">how we’re funded</a></p>
+  <p class="byline">Real submissions, human-moderated, published with permission. Individual experiences, not medical evidence. · <span class="fnote">reader-supported, partner links marked (<a href="about.html">details</a>)</span></p>
 
   <div id="stories"><p class="rtime">Loading stories…</p></div>
   <p id="none" style="display:none">No published stories yet, <a href="share-your-story.html">be the first to share yours</a>.</p>
 
   <div class="note"><strong>Have a timeline to share?</strong> Good, bad, or "nothing happened", it helps the next person. <a href="share-your-story.html">Submit your story</a>; a human reads every one before publishing.</div>
-  <div class="med">Reader stories are individual experiences and are not medical advice or evidence of typical results. Consult a licensed provider about your own treatment.</div>
+  <details class="fp"><summary>Medical disclaimer</summary><div class="fpb">Reader stories are individual experiences and are not medical advice or evidence of typical results. Consult a licensed provider about your own treatment.</div></details>
 </main>
 <footer><div class="wrap">
   <p class="flogo">The Crown<span>Report</span><em>Hair loss, decoded. Numbers first.</em></p>
@@ -98,7 +97,7 @@ nav.links .top{display:none}}
       <a href="privacy.html">Privacy Policy</a>
       <a href="terms.html">Terms of Use</a></div>
   </div>
-  <p class="fsmall">Affiliate disclosure: The Crown Report is reader-supported. We may earn a commission when you buy through links on this site, at no extra cost to you, it's how the site is funded, and it never affects our verdicts or scores. Links to partners are marked. <a href="about.html">Read our editorial standards</a>.</p>
+  <p class="fsmall">Affiliate disclosure: The Crown Report is reader-supported. When you buy through marked partner links we may earn a commission, at no extra cost to you. That support keeps the site independent and never affects our verdicts or scores. <a href="about.html">Read our editorial standards</a>.</p>
   <p class="fsmall">Medical: content on this site is for information only and is not medical advice, diagnosis, or treatment. Consult a licensed healthcare provider before starting any hair loss treatment. Pricing verified July 2026 and subject to change.</p>
   <p class="fsmall">© 2026 The Crown Report</p>
 </div></footer>
@@ -110,6 +109,7 @@ fetch("/api/stories").then(r=>r.json()).then(d=>{
   if(!d.ok||!d.stories.length){el.innerHTML="";document.getElementById("none").style.display="block";return;}
   el.innerHTML=d.stories.map(s=>`
     <div class="story-card">
+      ${typeof s.photo==="string"&&s.photo.startsWith("data:image/jpeg;base64,")?`<img class="story-photo" src="${s.photo}" alt="Reader progress photo" loading="lazy">`:""}
       <div class="meta">${escS(s.months||"")} ${s.months?"·":""} ${escS(new Date(s.ts).toLocaleDateString())}</div>
       <h3 style="margin:.3rem 0 0">${escS(s.name)}, ${escS(s.treatment)}</h3>
       <p class="body">${escS(s.story)}</p>

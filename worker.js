@@ -40,10 +40,15 @@ async function handleSubmit(request, env) {
   const months = (d.months || "").trim().slice(0, 30);
   const story = (d.story || "").trim().slice(0, 6000);
   const email = (d.email || "").trim().slice(0, 120);
+  let photo = "";
+  if (typeof d.photo === "string" && d.photo.startsWith("data:image/jpeg;base64,")) {
+    if (d.photo.length > 500000) return json({ ok: false, error: "Photo too large. Please use a smaller image." }, 400);
+    photo = d.photo;
+  }
   if (!name || !treatment || !story || story.length < 80 || !d.consent)
     return json({ ok: false, error: "Please fill name, treatment, a story of at least 80 characters, and the consent box." }, 400);
   const id = "sub:" + Date.now() + "-" + Math.random().toString(36).slice(2, 8);
-  await env.STORIES.put(id, JSON.stringify({ name, treatment, months, story, email, status: "pending", ts: Date.now() }));
+  await env.STORIES.put(id, JSON.stringify({ name, treatment, months, story, email, photo, status: "pending", ts: Date.now() }));
   return json({ ok: true });
 }
 
@@ -57,7 +62,7 @@ export default {
       if (pathname === "/api/stories" && m === "GET") {
         const subs = await allSubs(env);
         const pub = subs.filter(s => s.status === "approved").slice(0, 100)
-          .map(({ name, treatment, months, story, ts }) => ({ name, treatment, months, story, ts }));
+          .map(({ name, treatment, months, story, photo, ts }) => ({ name, treatment, months, story, photo: photo || "", ts }));
         return json({ ok: true, stories: pub });
       }
 

@@ -660,3 +660,24 @@ main p a:hover,main li a:hover{background-size:0% 1.5px}
 header{transition:box-shadow .25s ease, transform .3s ease}
 header.hide{transform:translateY(-100%)}
 @media (prefers-reduced-motion:reduce){header{transition:box-shadow .25s ease}header.hide{transform:none}}
+
+/* funding note dissolved into byline: present, quiet, pre-click */
+.fnote{color:var(--muted);opacity:.85;font-size:.95em;white-space:nowrap}
+@media (max-width:520px){.fnote{white-space:normal}}
+.fnote a{color:var(--muted);text-decoration:underline dotted;text-underline-offset:2px}
+.fnote a:hover{color:var(--pine)}
+
+/* ===== v24: fine-print accordions ===== */
+.fp{border:0;border-top:1px solid var(--line);border-radius:0;margin:2rem 0 0;background:transparent}
+.fp summary{cursor:pointer;list-style:none;padding:10px 0 2px;display:flex;align-items:center;gap:7px;
+  font:600 .68rem/1 "IBM Plex Mono",monospace;text-transform:uppercase;letter-spacing:.12em;color:var(--muted)}
+.fp summary::-webkit-details-marker{display:none}
+.fp summary::before{content:"▸";font-size:.8em;transition:transform .2s ease;color:var(--amber-ink)}
+.fp[open] summary::before{transform:rotate(90deg)}
+.fp summary:hover{color:var(--ink)}
+.fp .fpb{padding:6px 0 4px;font-size:.76rem;line-height:1.65;color:var(--muted)}
+.fp + .fp{margin-top:.4rem;border-top:0}
+@media (prefers-reduced-motion:reduce){.fp summary::before{transition:none}}
+
+/* reader story photos */
+.story-photo{width:100%;max-height:340px;object-fit:cover;border-radius:12px;margin:0 0 12px;display:block}

@@ -62,8 +62,7 @@ nav.links .top{display:none}}
 <main class="wrap" id="main">
   <p class="kicker">Community</p>
   <h1>Share Your Results</h1>
-  <p class="byline">Real timelines from real readers beat any marketing photo. Tell us what you used and what happened.</p>
-  <p class="fund-line">Reader-supported · partner links marked · <a href="about.html">how we’re funded</a></p>
+  <p class="byline">Real timelines from real readers beat any marketing photo. Tell us what you used and what happened. · <span class="fnote">reader-supported, partner links marked (<a href="about.html">details</a>)</span></p>
 
   <p>The most useful thing on any hair loss site isn't a review, it's another person's honest timeline: what they used, when the shed hit, when photos started showing a difference, and whether they'd do it again. If you're 3+ months into any treatment, covered on this site or not, we want your story. Good, bad, or "nothing happened", null results help readers too.</p>
 
@@ -86,6 +85,8 @@ nav.links .top{display:none}}
       <textarea name="story" id="f-story" maxlength="6000" rows="7" required style="width:100%;padding:12px;border:1px solid var(--line-2);border-radius:10px;background:var(--paper);font:400 .95rem 'Public Sans',sans-serif;color:var(--ink)"></textarea>
       <label for="f-email">Email <span style="text-transform:none;letter-spacing:0">(optional, only so we can confirm before publishing; never displayed)</span></label>
       <input class="field" name="email" id="f-email" type="email" maxlength="120" style="width:100%;padding:12px;border:1px solid var(--line-2);border-radius:10px;background:var(--paper);font:600 1rem 'Public Sans',sans-serif;color:var(--ink)">
+      <label for="f-photo">Photo <span style="text-transform:none;letter-spacing:0">(optional, before/after or progress shot; reviewed before publishing)</span></label>
+      <input name="photoFile" id="f-photo" type="file" accept="image/*" style="width:100%;padding:10px;border:1px dashed var(--line-2);border-radius:10px;background:var(--paper);font:600 .9rem 'Public Sans',sans-serif;color:var(--muted)">
       <input name="website" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px" aria-hidden="true">
       <label style="display:flex;gap:10px;align-items:flex-start;text-transform:none;letter-spacing:0;font:400 .85rem 'Public Sans',sans-serif;color:var(--ink)">
         <input type="checkbox" name="consent" required style="margin-top:3px">
@@ -100,7 +101,7 @@ nav.links .top{display:none}}
 
   <div class="note"><strong>Why bother?</strong> Your 6-month timeline will be read by hundreds of people sitting exactly where you sat at month 0, deciding whether to start and whether to quit during the shed. It's the highest-value content on the internet for them, and only you can write it.</div>
 
-  <div class="med">Reader stories are individual experiences, not medical evidence or advice. Results vary widely; consult a licensed provider about your own treatment.</div>
+  <details class="fp"><summary>Medical disclaimer</summary><div class="fpb">Reader stories are individual experiences, not medical evidence or advice. Results vary widely; consult a licensed provider about your own treatment.</div></details>
   <p>Approved stories are published on the <a href="reader-results.html">Reader Results</a> page.</p>
 </main>
 <footer><div class="wrap">
@@ -125,7 +126,7 @@ nav.links .top{display:none}}
       <a href="privacy.html">Privacy Policy</a>
       <a href="terms.html">Terms of Use</a></div>
   </div>
-  <p class="fsmall">Affiliate disclosure: The Crown Report is reader-supported. We may earn a commission when you buy through links on this site, at no extra cost to you, it's how the site is funded, and it never affects our verdicts or scores. Links to partners are marked. <a href="about.html">Read our editorial standards</a>.</p>
+  <p class="fsmall">Affiliate disclosure: The Crown Report is reader-supported. When you buy through marked partner links we may earn a commission, at no extra cost to you. That support keeps the site independent and never affects our verdicts or scores. <a href="about.html">Read our editorial standards</a>.</p>
   <p class="fsmall">Medical: content on this site is for information only and is not medical advice, diagnosis, or treatment. Consult a licensed healthcare provider before starting any hair loss treatment. Pricing verified July 2026 and subject to change.</p>
   <p class="fsmall">© 2026 The Crown Report</p>
 </div></footer>
@@ -134,7 +135,18 @@ nav.links .top{display:none}}
 document.getElementById("storyForm").addEventListener("submit",async e=>{
   e.preventDefault();
   const f=e.target,btn=document.getElementById("storyBtn"),msg=document.getElementById("storyMsg");
-  const data=Object.fromEntries(new FormData(f).entries()); data.consent=f.consent.checked;
+  const data=Object.fromEntries(new FormData(f).entries()); data.consent=f.consent.checked; delete data.photoFile;
+  const pf=document.getElementById("f-photo").files[0];
+  if(pf){
+    try{
+      data.photo=await new Promise((res,rej)=>{const img=new Image();
+        img.onload=()=>{const s=Math.min(1,900/Math.max(img.width,img.height));
+          const c=document.createElement("canvas");c.width=Math.round(img.width*s);c.height=Math.round(img.height*s);
+          c.getContext("2d").drawImage(img,0,0,c.width,c.height);res(c.toDataURL("image/jpeg",0.8));};
+        img.onerror=rej;img.src=URL.createObjectURL(pf);});
+      if(data.photo.length>500000){msg.textContent="Photo too large even after compression, try a smaller image.";return;}
+    }catch{delete data.photo;}
+  }
   if(!data.name||!data.treatment||(data.story||"").length<80||!data.consent){msg.textContent="Please fill the required fields, story needs at least 80 characters.";return;}
   btn.disabled=true;btn.textContent="Submitting…";
   try{

@@ -81,6 +81,7 @@ function render(){
     <div class="admin-card">
       <div class="meta">${esc(new Date(s.ts).toLocaleString())} · ${esc(s.months||"duration n/a")} · ${s.email?esc(s.email):"no email"}</div>
       <h3 style="margin:.4rem 0">${esc(s.name)}, ${esc(s.treatment)}</h3>
+      ${typeof s.photo==="string"&&s.photo.startsWith("data:image/jpeg;base64,")?`<img src="${s.photo}" style="max-width:180px;border-radius:10px;display:block;margin:6px 0">`:""}
       <p class="story">${esc(s.story)}</p>
       <div class="row-actions">
         ${TAB!=="approved"?`<button class="btn" data-a="approve" data-id="${esc(s.id)}">Approve &amp; publish</button>`:""}
