@@ -620,7 +620,7 @@ main p a:hover,main li a:hover{background-size:0% 1.5px}
 /* ===== v21: WCAG contrast fixes ===== */
 :root{--amber-ink:#8A5713}
 @media (prefers-color-scheme:dark){:root{--amber-ink:#E29C45}}
-.kicker,.qstep,.tl-marks,.subscore span b,.badge{color:var(--amber-ink)}
+.kicker,.qstep,.tl-marks,.badge{color:var(--amber-ink)}
 .badge{border-color:color-mix(in srgb,var(--amber-ink) 45%,transparent)}
 .rx-head{background:#A05A14}
 @media (prefers-color-scheme:dark){.rx-head{background:#A05A14}}
@@ -650,3 +650,13 @@ main p a:hover,main li a:hover{background-size:0% 1.5px}
 #toTop.show{opacity:1;pointer-events:auto;transform:none}
 @media (max-width:720px){#toTop{display:none}}
 @media (prefers-reduced-motion:reduce){#toTop{transition:none}}
+
+/* ===== v23: scrollspy + smart header ===== */
+/* active TOC chip highlights while reading */
+.toc a.cur{background:var(--pine);border-color:var(--pine);color:#fff}
+@media (prefers-color-scheme:dark){.toc a.cur{color:#10231A}}
+
+/* header hides on scroll down, returns on scroll up (app feel) */
+header{transition:box-shadow .25s ease, transform .3s ease}
+header.hide{transform:translateY(-100%)}
+@media (prefers-reduced-motion:reduce){header{transition:box-shadow .25s ease}header.hide{transform:none}}

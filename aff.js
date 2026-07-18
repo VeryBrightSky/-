@@ -205,3 +205,31 @@ document.addEventListener("pointermove", e => {
   }, {passive:true});
   bt.addEventListener("click", () => scrollTo({top:0, behavior: calm ? "auto" : "smooth"}));
 })();
+
+// ===== v23: scrollspy + smart header =====
+(function(){
+  // TOC scrollspy
+  const toc = document.querySelector(".toc");
+  if (toc && "IntersectionObserver" in window) {
+    const links = [...toc.querySelectorAll('a[href^="#"]')];
+    const map = new Map(links.map(a => [a.getAttribute("href").slice(1), a]));
+    const spy = new IntersectionObserver(es => {
+      es.forEach(e => { if (e.isIntersecting) {
+        links.forEach(a => a.classList.remove("cur"));
+        const a = map.get(e.target.id); if (a) a.classList.add("cur");
+      }});
+    }, { rootMargin: "-20% 0px -70% 0px" });
+    map.forEach((_, id) => { const el = document.getElementById(id); if (el) spy.observe(el); });
+  }
+  // hide header scrolling down, show scrolling up
+  const hd = document.querySelector("header");
+  if (hd) {
+    let last = 0;
+    addEventListener("scroll", () => {
+      const y = document.documentElement.scrollTop;
+      if (Math.abs(y - last) < 8) return;
+      hd.classList.toggle("hide", y > last && y > 220 && !document.body.classList.contains("menu-open"));
+      last = y;
+    }, { passive: true });
+  }
+})();
