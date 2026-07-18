@@ -624,3 +624,29 @@ main p a:hover,main li a:hover{background-size:0% 1.5px}
 .badge{border-color:color-mix(in srgb,var(--amber-ink) 45%,transparent)}
 .rx-head{background:#A05A14}
 @media (prefers-color-scheme:dark){.rx-head{background:#A05A14}}
+
+/* ===== v22: premium micro-interactions ===== */
+/* logo crown draws itself on load */
+.logo svg path:first-child{stroke-dasharray:130;stroke-dashoffset:130;animation:drawCrown 1s ease .15s forwards}
+.logo svg path:last-child{transform-origin:left center;transform:scaleX(0);animation:drawBase .5s ease .9s forwards}
+@keyframes drawCrown{to{stroke-dashoffset:0}}
+@keyframes drawBase{to{transform:scaleX(1)}}
+@media (prefers-reduced-motion:reduce){.logo svg path:first-child,.logo svg path:last-child{animation:none;stroke-dashoffset:0;transform:none}}
+
+/* 3D tilt surface for cards (JS drives --rx/--ry) */
+@media (hover:hover) and (prefers-reduced-motion:no-preference){
+  .card{transform-style:preserve-3d;will-change:transform}
+  .card.tilting{transform:perspective(700px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)) translateY(-3px) scale(1.008);
+    transition:none}
+}
+
+/* scroll-to-top with progress ring */
+#toTop{position:fixed;right:22px;bottom:22px;width:46px;height:46px;border-radius:50%;z-index:35;
+  border:0;cursor:pointer;display:grid;place-items:center;opacity:0;pointer-events:none;
+  transform:translateY(8px);transition:opacity .25s,transform .25s;
+  background:conic-gradient(var(--pine) calc(var(--p,0)*1%),var(--line) 0)}
+#toTop::before{content:"";position:absolute;inset:3px;border-radius:50%;background:var(--card);box-shadow:var(--sh)}
+#toTop svg{position:relative;stroke:var(--pine);fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+#toTop.show{opacity:1;pointer-events:auto;transform:none}
+@media (max-width:720px){#toTop{display:none}}
+@media (prefers-reduced-motion:reduce){#toTop{transition:none}}

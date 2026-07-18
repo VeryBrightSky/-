@@ -147,3 +147,61 @@ document.addEventListener("pointermove", e => {
   t.style.setProperty("--mx", ((e.clientX - r.left) / r.width * 100) + "%");
   t.style.setProperty("--my", ((e.clientY - r.top) / r.height * 100) + "%");
 }, { passive: true });
+
+// ===== v22 premium interactions =====
+(function(){
+  const fine = matchMedia("(hover:hover)").matches;
+  const calm = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  // count-up numbers in hero stats and score when they enter view
+  if (!calm && "IntersectionObserver" in window) {
+    const els = document.querySelectorAll(".hstat b, .score b");
+    const io2 = new IntersectionObserver(es => es.forEach(e => {
+      if (!e.isIntersecting) return; io2.unobserve(e.target);
+      const el = e.target, parts = el.textContent.split(/(\d+\.?\d*)/);
+      const t0 = performance.now(), D = 900;
+      const ease = x => 1 - Math.pow(1 - x, 3);
+      (function tick(now){
+        const p = Math.min(1,(now - t0)/D), k = ease(p);
+        el.textContent = parts.map(s => /^\d/.test(s)
+          ? (s.includes(".") ? (parseFloat(s)*k).toFixed(1) : Math.round(parseFloat(s)*k))
+          : s).join("");
+        if (p < 1) requestAnimationFrame(tick); else el.textContent = parts.join("");
+      })(t0);
+    }), {threshold:.6});
+    els.forEach(el => io2.observe(el));
+  }
+
+  // magnetic buttons: drift a few px toward the cursor
+  if (fine && !calm) document.querySelectorAll(".btn").forEach(b => {
+    b.addEventListener("pointermove", e => {
+      const r = b.getBoundingClientRect();
+      b.style.transform = `translate(${(e.clientX-r.left-r.width/2)*.12}px,${(e.clientY-r.top-r.height/2)*.22}px)`;
+    });
+    b.addEventListener("pointerleave", () => { b.style.transform = ""; });
+  });
+
+  // 3D tilt on cards (pairs with the spotlight)
+  if (fine && !calm) document.querySelectorAll(".card").forEach(c => {
+    c.addEventListener("pointermove", e => {
+      const r = c.getBoundingClientRect();
+      c.classList.add("tilting");
+      c.style.setProperty("--ry", ((e.clientX-r.left)/r.width-.5)*6+"deg");
+      c.style.setProperty("--rx", (.5-(e.clientY-r.top)/r.height)*5+"deg");
+    });
+    c.addEventListener("pointerleave", () => { c.classList.remove("tilting");
+      c.style.removeProperty("--rx"); c.style.removeProperty("--ry"); });
+  });
+
+  // scroll-to-top with progress ring
+  const bt = document.createElement("button");
+  bt.id = "toTop"; bt.setAttribute("aria-label","Back to top");
+  bt.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24"><path d="M12 19V6M6 12l6-6 6 6"/></svg>';
+  document.body.appendChild(bt);
+  addEventListener("scroll", () => {
+    const d = document.documentElement, p = d.scrollTop/(d.scrollHeight-d.clientHeight||1)*100;
+    bt.style.setProperty("--p", p);
+    bt.classList.toggle("show", d.scrollTop > 600);
+  }, {passive:true});
+  bt.addEventListener("click", () => scrollTo({top:0, behavior: calm ? "auto" : "smooth"}));
+})();
