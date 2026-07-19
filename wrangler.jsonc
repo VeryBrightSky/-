@@ -1,6 +1,6 @@
 {
   // Must match your Worker's name in the Cloudflare dashboard
-  "name": "crownreport1",
+  "name": "crownreport",
   "main": "worker.js",
   "compatibility_date": "2026-07-01",
   "assets": {
